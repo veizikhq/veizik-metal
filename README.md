@@ -51,7 +51,7 @@ What needs the network: creating the account, activating the device, downloading
 https://veizik.com/benchmarks — every published row names the device, model, token counts, the other engine's version and settings, how each side was timed, and the spread. Rows measured on earlier builds of the same cores are marked. Reproduce with `veizik bench <model>` and the row's command.
 
 ## Limits, troubleshooting, terms
-- `veizik serve` needs a model name in this build; streaming and request fields such as temperature, top_p, seed, tools and response_format are rejected with an explicit error.
+- `veizik serve` takes a model name to serve just that one, or no name at all to host every model installed on the machine, routing each request by its "model" field; `/v1/models` lists what it is hosting. Streaming and request fields such as temperature, top_p, seed, tools and response_format are rejected with an explicit error.
 - Qwen3-1.7B returns its reasoning text inside the answer; add `/no_think` to the prompt for a direct reply.
 - Offline: run once while online and the session key stays in memory for 48 hours (server-set, as of 2026-10-02); restarting the Mac ends that window, and a new session cannot start offline outside it.
 - Not supported: Intel Macs, Windows, Linux. Headless activation is disabled.
