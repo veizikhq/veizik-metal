@@ -28,9 +28,9 @@ Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on t
 
 ## Install and first run
 ```bash
-curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r2/veizik-metal-2026.10.02-r2.dmg
-shasum -a 256 veizik-metal-2026.10.02-r2.dmg   # d4860f6a34f8f95f879293f50986faaf1994b49457f924d0c45f5c79af0b3f6a
-M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r2.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
+curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r3/veizik-metal-2026.10.02-r3.dmg
+shasum -a 256 veizik-metal-2026.10.02-r3.dmg   # f66ad4f0151796890d22856c4b60220cfabc91a7ba4b65877d07ed1af1b8045e
+M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r3.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
 "$M/install.sh" && hdiutil detach "$M"   # the mount point is read from the attach, not assumed
 export PATH="$HOME/.local/bin:$PATH"
 veizik activate                       # opens veizik.com/activate — sign in (email link, Google or GitHub) and approve this Mac once
@@ -43,7 +43,7 @@ The installer verifies SHA256SUMS and the Developer ID signatures before copying
 What needs the network: creating the account, activating the device, downloading a checkpoint, and the first run of each session (a short-lived licence lease held in memory). Generation itself does not.
 
 ## Measured on this build
-- Installed binaries: 4,777,641 bytes in 43 files; the installer aliases the instruct variants rather than copying them. The CLI links libSystem; each core links libSystem, libobjc, Metal, IOKit, CoreFoundation, Security.
+- Installed binaries: 4,761,129 bytes in 43 files; the installer aliases the instruct variants rather than copying them. The CLI links libSystem; each core links libSystem, libobjc, Metal, IOKit, CoreFoundation, Security.
 - Speed figures are not printed here. Every one this project has measured was taken on the previous build's cores, which this release replaces, and a rate belongs to the binaries it was measured on. The board at https://veizik.com/benchmarks carries them as soon as this package has been measured, bound to its cores.
 - Same prompt, same machine, same build → identical output (greedy decoding). Verified on the previous build across 60 benchmark cells on three Macs, 60 of 60; being re-checked on this one.
 - Where it is behind: the benchmarks board lists every row where another engine is ahead, with the method beside it — https://veizik.com/benchmarks
@@ -55,11 +55,12 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - `veizik serve` takes a model name to serve just that one, or no name at all to host every model installed on the machine, routing each request by its "model" field; `/v1/models` lists what it is hosting. Streaming and request fields such as temperature, top_p, seed, tools and response_format are rejected with an explicit error.
 - Qwen3-1.7B returns its reasoning text inside the answer; add `/no_think` to the prompt for a direct reply.
 - Offline: run once while online and the session key stays in memory for 48 hours (server-set, as of 2026-10-02); restarting the Mac ends that window, and a new session cannot start offline outside it.
-- Upgrading: the disk image's volume name is the same for 2026.10.02 and 2026.10.02-r2, so if an older copy is still mounted macOS mounts the new one beside it with a numbered suffix. The install command above reads the mount point from the attach for that reason; a hardcoded path would run whichever installer was mounted first. `veizik doctor` prints the installation it is running from.
+- Upgrading: this release's disk image carries its own volume name, so it no longer lands beside an older copy under a numbered suffix — which is what previously let an install run the earlier version's installer and succeed. The command above still reads the mount point from the attach rather than assuming it, because that is correct for any build. `veizik doctor` prints the installation it is running from.
+- After upgrading, a first run may stop with an error beginning SEAL REJECT on a model that worked before. A helper left running by the previous version is the cause, and `veizik status` will still report the licence as valid, so trust the run and not the status. Log out and back in, or restart the Mac, and run it again.
 - If the engine cannot start on your Mac it says so and exits rather than running anyway. This only happens on configurations that restrict what an application may do with memory, which a stock macOS does not; if you see it, support@veizik.com.
 - Not supported: Intel Macs, Windows, Linux. Headless activation is disabled.
 - Troubleshooting: `veizik doctor` · https://veizik.com/docs#troubleshooting · Issues and Discussions in this repository · support@veizik.com
 - Licence: personal, educational, research and evaluation use at no charge; commercial use needs a separate licence; publishing benchmarks is explicitly allowed. See LICENSE and NOTICE.md. Veizik is a brand of LinkPick, Seoul.
 
-## Package contents (v2026.10.02-r2, sha256 d4860f6a…)
-veizik 832,992 B · install.sh 7,577 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · models/ (4 cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
+## Package contents (v2026.10.02-r3, sha256 f66ad4f0…)
+veizik 816,480 B · install.sh 9,977 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · models/ (4 cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
