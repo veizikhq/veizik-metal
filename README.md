@@ -30,7 +30,8 @@ Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on t
 ```bash
 curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r2/veizik-metal-2026.10.02-r2.dmg
 shasum -a 256 veizik-metal-2026.10.02-r2.dmg   # d4860f6a34f8f95f879293f50986faaf1994b49457f924d0c45f5c79af0b3f6a
-open veizik-metal-2026.10.02-r2.dmg && "/Volumes/veizik-metal 2026.10.02/install.sh"
+M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r2.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
+"$M/install.sh" && hdiutil detach "$M"   # the mount point is read from the attach, not assumed
 export PATH="$HOME/.local/bin:$PATH"
 veizik activate                       # opens veizik.com/activate — sign in (email link, Google or GitHub) and approve this Mac once
 veizik pull qwen2.5-1.5b-instruct     # 2.8 GiB from Hugging Face, verified; an existing ~/.cache/huggingface copy is reused
@@ -54,6 +55,7 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - `veizik serve` takes a model name to serve just that one, or no name at all to host every model installed on the machine, routing each request by its "model" field; `/v1/models` lists what it is hosting. Streaming and request fields such as temperature, top_p, seed, tools and response_format are rejected with an explicit error.
 - Qwen3-1.7B returns its reasoning text inside the answer; add `/no_think` to the prompt for a direct reply.
 - Offline: run once while online and the session key stays in memory for 48 hours (server-set, as of 2026-10-02); restarting the Mac ends that window, and a new session cannot start offline outside it.
+- Upgrading: the disk image's volume name is the same for 2026.10.02 and 2026.10.02-r2, so if an older copy is still mounted macOS mounts the new one beside it with a numbered suffix. The install command above reads the mount point from the attach for that reason; a hardcoded path would run whichever installer was mounted first. `veizik doctor` prints the installation it is running from.
 - If the engine cannot start on your Mac it says so and exits rather than running anyway. This only happens on configurations that restrict what an application may do with memory, which a stock macOS does not; if you see it, support@veizik.com.
 - Not supported: Intel Macs, Windows, Linux. Headless activation is disabled.
 - Troubleshooting: `veizik doctor` · https://veizik.com/docs#troubleshooting · Issues and Discussions in this repository · support@veizik.com
