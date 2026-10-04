@@ -28,9 +28,9 @@ Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on t
 
 ## Install and first run
 ```bash
-curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r3/veizik-metal-2026.10.02-r3.dmg
-shasum -a 256 veizik-metal-2026.10.02-r3.dmg   # f66ad4f0151796890d22856c4b60220cfabc91a7ba4b65877d07ed1af1b8045e
-M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r3.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
+curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r5/veizik-metal-2026.10.02-r5.dmg
+shasum -a 256 veizik-metal-2026.10.02-r5.dmg   # 3bfaa0fcb3f812cb7c03275e26f4ac2d713e604c1fdcdddcace8f7c9cf4d8b4e
+M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r5.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
 "$M/install.sh" && hdiutil detach "$M"   # the mount point is read from the attach, not assumed
 export PATH="$HOME/.local/bin:$PATH"
 veizik activate                       # opens veizik.com/activate — sign in (email link, Google or GitHub) and approve this Mac once
@@ -43,7 +43,7 @@ The installer verifies SHA256SUMS and the Developer ID signatures before copying
 What needs the network: creating the account, activating the device, downloading a checkpoint, and the first run of each session (a short-lived licence lease held in memory). Generation itself does not.
 
 ## Measured on this build
-- Installed binaries: 4,761,129 bytes in 43 files; the installer aliases the instruct variants rather than copying them. The CLI links libSystem; each core links libSystem, libobjc, Metal, IOKit, CoreFoundation, Security.
+- Installed binaries: this build adds a resident serve engine (VeizikServe.app) per model alongside each run core, so the installed footprint is larger than the previous build; the measured per-build figure is on the benchmarks board, bound to these cores. The CLI links libSystem; each core links libSystem, libobjc, Metal, IOKit, CoreFoundation, Security.
 - Speed figures are not printed here. Every one this project has measured was taken on the previous build's cores, which this release replaces, and a rate belongs to the binaries it was measured on. The board at https://veizik.com/benchmarks carries them as soon as this package has been measured, bound to its cores.
 - Same prompt, same machine, same build → identical output (greedy decoding). Verified on the previous build across 60 benchmark cells on three Macs, 60 of 60; being re-checked on this one.
 - Where it is behind: the benchmarks board lists every row where another engine is ahead, with the method beside it — https://veizik.com/benchmarks
@@ -61,5 +61,5 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - Troubleshooting: `veizik doctor` · https://veizik.com/docs#troubleshooting · Issues and Discussions in this repository · support@veizik.com
 - Licence: personal, educational, research and evaluation use at no charge; commercial use needs a separate licence; publishing benchmarks is explicitly allowed. See LICENSE and NOTICE.md. Veizik is a brand of LinkPick, Seoul.
 
-## Package contents (v2026.10.02-r3, sha256 f66ad4f0…)
-veizik 816,480 B · install.sh 9,977 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · models/ (4 cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
+## Package contents (v2026.10.02-r5, sha256 3bfaa0fc…)
+veizik 1,400,208 B · install.sh 11,307 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 390 B · models/ (4 run cores + 4 resident serve cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
