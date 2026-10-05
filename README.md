@@ -62,4 +62,4 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - Licence: personal, educational, research and evaluation use at no charge; commercial use needs a separate licence; publishing benchmarks is explicitly allowed. See LICENSE and NOTICE.md. Veizik is a brand of LinkPick, Seoul.
 
 ## Package contents (v2026.10.02-r6.1, sha256 40c619a3…)
-veizik 1,400,208 B · install.sh 11,307 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 390 B · models/ (4 run cores + 4 resident serve cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
+veizik 1,582,208 B · install.sh 11,790 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 739 B · models/ (4 run cores + 4 resident serve cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
