@@ -28,9 +28,9 @@ Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on t
 
 ## Install and first run
 ```bash
-curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r5/veizik-metal-2026.10.02-r5.dmg
-shasum -a 256 veizik-metal-2026.10.02-r5.dmg   # 3bfaa0fcb3f812cb7c03275e26f4ac2d713e604c1fdcdddcace8f7c9cf4d8b4e
-M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r5.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
+curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r6.1/veizik-metal-2026.10.02-r6.1.dmg
+shasum -a 256 veizik-metal-2026.10.02-r6.1.dmg   # 40c619a349f2fd2967b2bf6f7c9c8652a8b2009ea9810c1734039c22aca38ddc
+M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r6.1.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
 "$M/install.sh" && hdiutil detach "$M"   # the mount point is read from the attach, not assumed
 export PATH="$HOME/.local/bin:$PATH"
 veizik activate                       # opens veizik.com/activate — sign in (email link, Google or GitHub) and approve this Mac once
@@ -61,5 +61,5 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - Troubleshooting: `veizik doctor` · https://veizik.com/docs#troubleshooting · Issues and Discussions in this repository · support@veizik.com
 - Licence: personal, educational, research and evaluation use at no charge; commercial use needs a separate licence; publishing benchmarks is explicitly allowed. See LICENSE and NOTICE.md. Veizik is a brand of LinkPick, Seoul.
 
-## Package contents (v2026.10.02-r5, sha256 3bfaa0fc…)
+## Package contents (v2026.10.02-r6.1, sha256 40c619a3…)
 veizik 1,400,208 B · install.sh 11,307 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 390 B · models/ (4 run cores + 4 resident serve cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
