@@ -28,12 +28,14 @@ Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on t
 
 ## Install and first run
 ```bash
-curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r6.1/veizik-metal-2026.10.02-r6.1.dmg
-shasum -a 256 veizik-metal-2026.10.02-r6.1.dmg   # 40c619a349f2fd2967b2bf6f7c9c8652a8b2009ea9810c1734039c22aca38ddc
-M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r6.1.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
+curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r6.3/veizik-metal-2026.10.02-r6.3.dmg
+shasum -a 256 veizik-metal-2026.10.02-r6.3.dmg   # 8dde57ab67145cd4e2aafd2aaec03a06ac076c9b3c5c3c537fe4f0ccbbe313c6
+M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r6.3.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
 "$M/install.sh" && hdiutil detach "$M"   # the mount point is read from the attach, not assumed
 export PATH="$HOME/.local/bin:$PATH"
 veizik activate                       # opens veizik.com/activate — sign in (email link, Google or GitHub) and approve this Mac once
+#   no browser on this Mac (SSH)? on your account page create a key (Browser-free activation) and set a CLI password, then:
+#   veizik activate --key vzek_… --password-stdin < pwfile
 veizik pull qwen2.5-1.5b-instruct     # 2.8 GiB from Hugging Face, verified; an existing ~/.cache/huggingface copy is reused
 veizik chat qwen2.5-1.5b-instruct     # interactive; or:
 veizik run qwen3-1.7b "The capital of France is" --tokens 32
@@ -57,9 +59,9 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - Offline: run once while online and the session key stays in memory for 48 hours (server-set, as of 2026-10-02); restarting the Mac ends that window, and a new session cannot start offline outside it.
 - Upgrading: this release's disk image carries its own volume name, so it no longer lands beside an older copy under a numbered suffix — which is what previously let an install run the earlier version's installer and succeed. The command above still reads the mount point from the attach rather than assuming it, because that is correct for any build. `veizik doctor` prints the installation it is running from.
 - If the engine cannot start on your Mac it says so and exits rather than running anyway. This only happens on configurations that restrict what an application may do with memory, which a stock macOS does not; if you see it, support@veizik.com.
-- Not supported: Intel Macs, Windows, Linux. Headless activation is disabled.
+- Not supported: Intel Macs, Windows, Linux (NVIDIA support is in preparation and not public yet).
 - Troubleshooting: `veizik doctor` · https://veizik.com/docs#troubleshooting · Issues and Discussions in this repository · support@veizik.com
 - Licence: personal, educational, research and evaluation use at no charge; commercial use needs a separate licence; publishing benchmarks is explicitly allowed. See LICENSE and NOTICE.md. Veizik is a brand of LinkPick, Seoul.
 
-## Package contents (v2026.10.02-r6.1, sha256 40c619a3…)
-veizik 1,582,208 B · install.sh 11,790 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 739 B · models/ (4 run cores + 4 resident serve cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
+## Package contents (v2026.10.02-r6.3, sha256 8dde57ab…)
+veizik 1,648,432 B · install.sh 11,790 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 739 B · models/ (4 run cores + 4 resident serve cores + activation helpers). Verify with `shasum -a 256 -c SHA256SUMS`.
