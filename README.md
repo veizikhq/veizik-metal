@@ -28,9 +28,9 @@ Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on t
 
 ## Install and first run
 ```bash
-curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r6.5/veizik-metal-2026.10.02-r6.5.dmg
-shasum -a 256 veizik-metal-2026.10.02-r6.5.dmg   # 10317c79def77fe6c90b55d1db2603d39c5f6efd909e679956f699937993898c
-M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r6.5.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
+curl -LO https://github.com/veizikhq/veizik-metal/releases/download/v2026.10.02-r10/veizik-metal-2026.10.02-r10.dmg
+shasum -a 256 veizik-metal-2026.10.02-r10.dmg   # d74d9f2f6b167679df1294325c12921709363f3d6aa75633f2edfd043ca9f678
+M=$(hdiutil attach -nobrowse veizik-metal-2026.10.02-r10.dmg | awk -F'\t' '/Volumes/{print $NF}' | tail -1)
 "$M/install.sh" && hdiutil detach "$M"   # the mount point is read from the attach, not assumed
 export PATH="$HOME/.local/bin:$PATH"
 veizik activate                       # opens veizik.com/activate — sign in (email link, Google or GitHub) and approve this Mac once
@@ -47,7 +47,8 @@ What needs the network: creating the account, activating the device, downloading
 
 ## Measured on this build
 - Installed binaries: this build adds a resident serve engine (VeizikServe.app) per model alongside each run core, so the installed footprint is larger than the previous build; the measured per-build figure is on the benchmarks board, bound to these cores. The CLI links libSystem; each core links libSystem, libobjc, Metal, IOKit, CoreFoundation, Security.
-- Speed: all eight engines in this release are byte-for-byte the engines of v2026.10.02-r6.1, r6.2, r6.3 and r6.4 (the four run engines are also the r5 ones), so every row the benchmarks board timed on the engines applies unchanged: https://veizik.com/benchmarks . This release changes only the `veizik` command. Rows that time the whole command (wall rows) include the `veizik` command, which changed in this release; they are held until they are timed on this build.
+- Accuracy / quality: the eight engines in this release are the v2026.10.02-r6.x engines rebuilt with op-stream hardening -- they render token-for-token identically to the r6.x cores (independently verified, greedy output byte-identical), so the r6.x **quality / accuracy** benchmark rows carry unchanged: https://veizik.com/benchmarks . The binaries differ from r6.x by design (that is the hardening); only the rendered output is identical.
+- Speed: NOT claimed to carry from r6.x. The op-stream hardening can add runtime overhead, and this build has not been timed yet, so the **speed / latency / throughput** rows (and the wall rows, which include the `veizik` command) are held until they are measured on this r10 build.
 - Same prompt, same machine, same build → identical output (greedy decoding, the default). With `--temperature` above 0 the output is sampled; the same `--seed` and settings on the same Mac give the same text again. `veizik serve` gives the same text as `veizik run` for the same prompt and settings, checked token by token at 4K, 8K, 16K and 30K-token prompts. The same holds at 1, 4 and 16 concurrent requests.
 - Where it is behind: the benchmarks board lists every row where another engine is ahead, with the method beside it — https://veizik.com/benchmarks
 
@@ -65,5 +66,5 @@ https://veizik.com/benchmarks — every published row names the device, model, t
 - Troubleshooting: `veizik doctor` · https://veizik.com/docs#troubleshooting · Issues and Discussions in this repository · support@veizik.com
 - Licence: personal, educational, research and evaluation use at no charge; commercial use needs a separate licence; publishing benchmarks is explicitly allowed. See LICENSE and NOTICE.md. Veizik is a brand of LinkPick, Seoul.
 
-## Package contents (v2026.10.02-r6.5, sha256 10317c79…)
-veizik 1,681,456 B · install.sh 18,896 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 739 B · models/ (4 run cores + 4 resident serve cores + activation helpers, the same bytes as r6.4, r6.3, r6.2 and r6.1). Verify with `shasum -a 256 -c SHA256SUMS`.
+## Package contents (v2026.10.02-r10, sha256 d74d9f2f…)
+veizik 1,681,456 B · install.sh 9,809 B · models.json 9,076 B · models.json.sig 64 B · coreids.json 1,373 B · MANIFEST.txt 490 B · LICENSE 6,029 B · NOTICE.md 1,859 B · entitlement_enums.json 739 B · models/ (4 run cores + 4 resident serve cores + activation helpers, op-stream-hardened rebuilds of the r6.x cores -- render-identical, different bytes). Verify with `shasum -a 256 -c SHA256SUMS`.
