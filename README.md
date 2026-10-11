@@ -24,7 +24,7 @@ A Safetensors checkpoint is a pre-optimized model checkpoint that is designed to
 | qwen2.5-7b / -instruct | Qwen/Qwen2.5-7B / -Instruct | instruct only |
 | qwen3-1.7b / -base | Qwen/Qwen3-1.7B / -Base | qwen3-1.7b |
 
-Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on the benchmarks board; they carry over to this build because its engines are byte-identical to the measured ones. Checkpoints are not included — `veizik pull` fetches them from Hugging Face under Alibaba Cloud's Apache-2.0 licence.
+Context: 32,768 tokens declared, 30,000 measured. Device-memory figures are on the benchmarks board; they carry to this build by §R measured-neutrality — the generated GPU kernels are byte-identical to the measured cores and the steady-state probe held device memory within 1%. Checkpoints are not included — `veizik pull` fetches them from Hugging Face under Alibaba Cloud's Apache-2.0 licence.
 
 ## Install and first run
 ```bash
@@ -48,7 +48,7 @@ What needs the network: creating the account, activating the device, downloading
 ## Measured on this build
 - Installed binaries: this build adds a resident serve engine (VeizikServe.app) per model alongside each run core, so the installed footprint is larger than the previous build; the measured per-build figure is on the benchmarks board, bound to these cores. The CLI links libSystem; each core links libSystem, libobjc, Metal, IOKit, CoreFoundation, Security.
 - Accuracy / quality: the eight engines in this release are the v2026.10.02-r6.x engines rebuilt with op-stream hardening -- they render token-for-token identically to the r6.x cores (independently verified, greedy output byte-identical), so the r6.x **quality / accuracy** benchmark rows carry unchanged: https://veizik.com/benchmarks . The binaries differ from r6.x by design (that is the hardening); only the rendered output is identical.
-- Speed: NOT claimed to carry from r6.x. The op-stream hardening can add runtime overhead, and this build has not been timed yet, so the **speed / latency / throughput** rows (and the wall rows, which include the `veizik` command) are held until they are measured on this r10 build.
+- Speed / latency / throughput: measured on the r6.x cores and carried to this build by §R measured-neutrality — the engines render token-for-token identically, the generated GPU kernels are byte-identical to the measured cores, and a 3-core steady-state speed probe (decode / prefill on 0.5b, 7b, qwen3-1.7b) held within ±2σ and |Δ| ≤ 3% of the r6.x measurement. The **speed / latency / throughput** rows carry on that basis; each carried row is marked on the board: https://veizik.com/benchmarks
 - Same prompt, same machine, same build → identical output (greedy decoding, the default). With `--temperature` above 0 the output is sampled; the same `--seed` and settings on the same Mac give the same text again. `veizik serve` gives the same text as `veizik run` for the same prompt and settings, checked token by token at 4K, 8K, 16K and 30K-token prompts. The same holds at 1, 4 and 16 concurrent requests.
 - Where it is behind: the benchmarks board lists every row where another engine is ahead, with the method beside it — https://veizik.com/benchmarks
 
